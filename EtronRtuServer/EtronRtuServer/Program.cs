@@ -13,5 +13,7 @@ while (true)
 
     Console.WriteLine($"connected : {sessionId}"); //접속됨.
     var session = new Session(sessionId, tcpClient);
+
+    _ = session.StartReceive();
 }
 
