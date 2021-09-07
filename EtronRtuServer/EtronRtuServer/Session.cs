@@ -14,9 +14,16 @@ public class Session
         var socket = this.TcpClient.Client;
         while (true)
         {
-            var header = await socket.ReceiveAsync(50);
+           
+            var headerBytes = await socket.ReceiveAsync(50);
+            Console.WriteLine($"header : {BitConverter.ToString(headerBytes)}");
 
-            Console.WriteLine($"header : {BitConverter.ToString(header)}");
+            var headerReader = new BinaryReader(headerBytes);
+            var header = headerReader.ReadHeader();
+
+            var payloadBytes = header.BodyLength == 0 ? new byte[0] : await socket.ReceiveAsync(header.BodyLength);
+
+            Console.WriteLine($"payload : {BitConverter.ToString(payloadBytes)}");
 
             throw new NotImplementedException("¹Ì±¸Çö");
         }
