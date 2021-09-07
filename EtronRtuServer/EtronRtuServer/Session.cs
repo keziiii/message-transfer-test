@@ -21,11 +21,26 @@ public class Session
             var headerReader = new BinaryReader(headerBytes);
             var header = headerReader.ReadHeader();
 
-            var payloadBytes = header.BodyLength == 0 ? new byte[0] : await socket.ReceiveAsync(header.BodyLength);
+            var payload = header.BodyLength == 0 ? new byte[0] : await socket.ReceiveAsync(header.BodyLength);
 
-            Console.WriteLine($"payload : {BitConverter.ToString(payloadBytes)}");
+            await this.OnReceive(header, payload);
 
-            throw new NotImplementedException("미구현");
+
         }
+    }
+
+    async Task OnReceive(RtuHeader header, byte[] payload)
+    {
+        Console.WriteLine($"payload : {BitConverter.ToString(payload)}");
+
+        if(header.CommandId == 0x14)
+        {
+            throw new NotImplementedException("ack 미구현");
+        }
+        else
+        {
+            throw new NotImplementedException("command 미구현");
+        }
+        
     }
 }
