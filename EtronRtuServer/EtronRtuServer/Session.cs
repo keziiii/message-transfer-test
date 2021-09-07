@@ -35,7 +35,7 @@ public class Session
 
         if(header.CommandId == 0x14)
         {
-            throw new NotImplementedException("ack ¹Ì±¸Çö");
+            await this.TcpClient.Client.SendAsync(new byte[] { });
         }
         else
         {

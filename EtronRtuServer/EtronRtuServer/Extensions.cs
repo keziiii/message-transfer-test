@@ -19,7 +19,15 @@
             receiveCount += recv;
         }
         return buffer;
-        
+
+    }
+    public static async Task<int> SendAsync(this Socket socket, byte[] buffer)
+    {
+        int sendCount = await Task.Factory.FromAsync(
+                   socket.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, null, socket),
+                   socket.EndSend);
+
+        return sendCount;
     }
 }
 
