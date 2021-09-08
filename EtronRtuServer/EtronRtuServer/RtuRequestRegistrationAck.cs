@@ -72,16 +72,14 @@ public struct RtuRequestRegistrationAck
         memoryStream.Write(Binary.LittleEndian.GetBytes(this.BodyLength));
         memoryStream.Write(this.CurrentTime);
         
-        var temp = memoryStream.ToArray();
+        var result = memoryStream.ToArray();
+
+
         Console.WriteLine("---------");
-        foreach (var VARIABLE in temp)
-        {
-            Console.Write("{0:x}",VARIABLE);
-        }
-        Console.WriteLine();
+        Console.WriteLine(  BitConverter.ToString(result));
         Console.WriteLine("---------");
         
-        return temp;
+        return result;
     }
 
 }
