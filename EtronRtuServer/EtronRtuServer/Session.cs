@@ -1,3 +1,4 @@
+namespace EtronRtuServer;
 public class Session
 {
     public Session(int sessionId, TcpClient tcpClient)
@@ -9,23 +10,30 @@ public class Session
     public int SessionId { get; }
     public TcpClient TcpClient { get; }
 
+    public string Imei { get; private set; }
+
     public async Task StartReceive()
     {
         var socket = this.TcpClient.Client;
         while (true)
         {
-           
-            var headerBytes = await socket.ReceiveAsync(50);
-            Console.WriteLine($"header : {BitConverter.ToString(headerBytes)}");
+            try
+            {
+                var headerBytes = await socket.ReceiveAsync(50);
+                Console.WriteLine($"header : {BitConverter.ToString(headerBytes)}");
 
-            var headerReader = new BinaryReader(headerBytes);
-            var header = headerReader.ReadHeader();
+                var headerReader = new BinaryReader(headerBytes);
+                var header = headerReader.ReadHeader();
 
-            var payload = header.BodyLength == 0 ? new byte[0] : await socket.ReceiveAsync(header.BodyLength);
+                var payload = header.BodyLength == 0 ? Array.Empty<byte>() : await socket.ReceiveAsync(header.BodyLength);
 
-            await this.OnReceive(header, payload);
-
-
+                await this.OnReceive(header, payload);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                break;
+            }
         }
     }
 
@@ -38,8 +46,12 @@ public class Session
 
         if(header.CommandId == 0x14)
         {
+            this.Imei = header.Imei;
+
+            //db 확인
+            //첫접속에 대한 확인+처리
+
             var ack = new RtuRequestRegistrationAck(header);
-            
             await this.TcpClient.Client.SendAsync(ack.ToBytes());
         }
         else if(header.CommandId == 0x02)

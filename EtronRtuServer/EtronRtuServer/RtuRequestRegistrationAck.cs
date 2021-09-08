@@ -1,4 +1,4 @@
-﻿
+﻿namespace EtronRtuServer;
 /*
 Command ID
 (0x02) Response Get Device Status 
@@ -12,21 +12,21 @@ sample header:
 */
 public struct RtuRequestRegistrationAck
 {
-    private byte[] Version;
-    private byte CommandId;
-    private byte[] Token;
-    private UInt16 BodyLength;
-    private byte[] TransactionId;
-    private byte[] ModelCode;
-    private byte[] DeviceId;
-    private byte DeviceIdLength;
-    private byte EncryptionType;
-    private byte StatusCode;
-    private byte AlwaysOn;
-    private byte[] StartTime;
-    private byte[] EndTime;
-    private UInt16 HeartBeatInterval;
-    private byte[] CurrentTime;
+    private readonly byte[] Version;
+    private readonly byte CommandId;
+    private readonly byte[] Token;
+    private readonly UInt16 BodyLength;
+    private readonly byte[] TransactionId;
+    private readonly byte[] ModelCode;
+    private readonly byte[] DeviceId;
+    private readonly byte DeviceIdLength;
+    private readonly byte EncryptionType;
+    private readonly byte StatusCode;
+    private readonly byte AlwaysOn;
+    private readonly byte[] StartTime;
+    private readonly byte[] EndTime;
+    private readonly UInt16 HeartBeatInterval;
+    private readonly byte[] CurrentTime;
 
     public RtuRequestRegistrationAck(RtuHeader header)
     {
@@ -34,7 +34,7 @@ public struct RtuRequestRegistrationAck
         this.CommandId = 0x15; // 고정값
 
         this.Token = new byte[20];
-        Random rnd = new Random();
+        var rnd = new Random();
         rnd.NextBytes(this.Token);
 
         this.BodyLength = 11;

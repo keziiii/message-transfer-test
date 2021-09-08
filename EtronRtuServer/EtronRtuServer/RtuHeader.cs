@@ -1,4 +1,5 @@
-﻿public struct RtuHeader
+﻿namespace EtronRtuServer;
+public struct RtuHeader
 {
     public byte[] Version { get; init; }
     public byte CommandId { get; init; }

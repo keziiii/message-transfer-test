@@ -1,4 +1,5 @@
-﻿public static class Extensions
+﻿namespace EtronRtuServer;
+public static class Extensions
 {
     public static async Task<byte[]> ReceiveAsync(this Socket socket, int length)
     {

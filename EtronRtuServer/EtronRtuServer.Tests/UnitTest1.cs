@@ -26,7 +26,7 @@ public class UnitTest1
     [Fact]
     public void HeaderCursorTest()
     {
-        var header = binaryReader.ReadHeader();
+        _ = binaryReader.ReadHeader();
         Assert.Equal(50, binaryReader.Cursor);
     }
 

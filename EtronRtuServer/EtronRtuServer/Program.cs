@@ -1,20 +1,12 @@
-﻿Console.WriteLine("Hello, World!");
-
-int port = 7000;
-var listener = new TcpListener(new IPEndPoint(IPAddress.Any, port));
-listener.Start();
-
-int sessionId = 0;
-while (true)
+﻿namespace EtronRtuServer;
+public class Program
 {
-    var tcpClient = await listener.AcceptTcpClientAsync().ConfigureAwait(false);
+    public static async Task Main()
+    {
+        Console.WriteLine("Hello, World!");
 
-    sessionId++;
+        var listener = new RtuSocketServer();
 
-    Console.WriteLine($"connected : {sessionId}"); //접속됨.
-    var session = new Session(sessionId, tcpClient);
-
-    _ = session.StartReceive();
+        await listener.Listen();
+    }
 }
-
-
