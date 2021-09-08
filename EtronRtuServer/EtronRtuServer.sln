@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EtronRtuServer", "EtronRtuServer\EtronRtuServer.csproj", "{D8D5CCA1-B093-46FB-AA27-902E961B08F3}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EtronRtuServer.Tests", "EtronRtuServer.Tests\EtronRtuServer.Tests.csproj", "{E6CC1799-4CF3-4D61-9160-3E7FD0C8C244}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D8D5CCA1-B093-46FB-AA27-902E961B08F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8D5CCA1-B093-46FB-AA27-902E961B08F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D8D5CCA1-B093-46FB-AA27-902E961B08F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6CC1799-4CF3-4D61-9160-3E7FD0C8C244}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6CC1799-4CF3-4D61-9160-3E7FD0C8C244}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6CC1799-4CF3-4D61-9160-3E7FD0C8C244}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6CC1799-4CF3-4D61-9160-3E7FD0C8C244}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

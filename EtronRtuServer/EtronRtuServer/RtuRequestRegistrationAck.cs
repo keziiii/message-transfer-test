@@ -32,10 +32,14 @@ public struct RtuRequestRegistrationAck
     {
         this.Version = header.Version; // 고정값
         this.CommandId = 0x15; // 고정값
-        this.Token = new byte[20];        
+
+        this.Token = new byte[20];
+        Random rnd = new Random();
+        rnd.NextBytes(this.Token);
+
         this.BodyLength = 11;
         this.TransactionId = new byte[2]; // 사용x
-        this.ModelCode = new byte[2]; // ??
+        this.ModelCode = header.ModelCode;
         this.DeviceId = header.DeviceId;
         this.DeviceIdLength = header.DeviceIdLength;
         this.EncryptionType = 0;
@@ -45,8 +49,6 @@ public struct RtuRequestRegistrationAck
         this.EndTime = new byte[2]; // 사용x
         this.HeartBeatInterval = (ushort)3;
         this.CurrentTime = new byte[4]; // 사용x
-
-        this.GenerateToken();
     }
 
     public byte[] ToBytes()
@@ -66,7 +68,8 @@ public struct RtuRequestRegistrationAck
         memoryStream.WriteByte(this.AlwaysOn);
         memoryStream.Write(this.StartTime);
         memoryStream.Write(this.EndTime);
-        memoryStream.Write(BitConverter.GetBytes(this.HeartBeatInterval));
+
+        memoryStream.Write(Binary.LittleEndian.GetBytes(this.BodyLength));
         memoryStream.Write(this.CurrentTime);
         
         var temp = memoryStream.ToArray();
@@ -81,9 +84,4 @@ public struct RtuRequestRegistrationAck
         return temp;
     }
 
-    public void GenerateToken()
-    {
-        Random rnd = new Random();
-        rnd.NextBytes(this.Token);
-    }
 }

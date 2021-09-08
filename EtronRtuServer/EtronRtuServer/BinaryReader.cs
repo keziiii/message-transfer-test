@@ -12,14 +12,14 @@ using static BinaryEncoding.Binary;
 public class BinaryReader
 {
     private readonly byte[] data;
-    int cursor;
+    public int Cursor { get; private set; }
     public BinaryReader(byte[] data)
     {
         this.data = data;
     }
 
-    public byte ReadByte() => data[cursor++];
-    public byte[] ReadBytes(int length)=> data[cursor.. (cursor+=length)];
+    public byte ReadByte() => data[Cursor++];
+    public byte[] ReadBytes(int length)=> data[Cursor.. (Cursor+=length)];
 
     public RtuHeader ReadHeader()
     {
@@ -30,14 +30,14 @@ public class BinaryReader
             Token = this.ReadBytes(20),
             BodyLength = Binary.LittleEndian.GetUInt16(this.ReadBytes(2)),
             TransactionId = this.ReadBytes(2),
-            ModelCode = this.ReadBytes(2),
+            ModelCode = this.ReadBytes(4),
             DeviceId = this.ReadBytes(16),
             DeviceIdLength = this.ReadByte(),
             EncryptionType = this.ReadByte(),
             StatusCode = this.ReadByte()
         };
 
-        result.Imei = BitConverter.ToString(result.DeviceId[..10])[7..].Replace("-", "");
+        result.Imei = BitConverter.ToString(result.DeviceId[..8])[1..].Replace("-", "");
         
         return result;
     }
