@@ -73,12 +73,6 @@ public struct RtuRequestRegistrationAck
         memoryStream.Write(this.CurrentTime);
         
         var result = memoryStream.ToArray();
-
-
-        Console.WriteLine("---------");
-        var message = BitConverter.ToString(result);
-        Console.WriteLine( message );
-        Console.WriteLine("---------");
         
         return result;
     }
