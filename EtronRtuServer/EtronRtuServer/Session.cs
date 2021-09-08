@@ -29,6 +29,9 @@ public class Session
         }
     }
 
+
+    static readonly byte[] statusAckBytes = new byte[] { 0x56, 0x76, 0x03 };
+
     async Task OnReceive(RtuHeader header, byte[] payload)
     {
         Console.WriteLine($"payload : {BitConverter.ToString(payload)}");
@@ -38,6 +41,11 @@ public class Session
             var ack = new RtuRequestRegistrationAck(header);
             
             await this.TcpClient.Client.SendAsync(ack.ToBytes());
+        }
+        else if(header.CommandId == 0x02)
+        {
+            Console.WriteLine($"{payload.Length} >> {BitConverter.ToString(payload)}");
+            await this.TcpClient.Client.SendAsync(statusAckBytes);
         }
         else
         {
