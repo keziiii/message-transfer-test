@@ -27,6 +27,7 @@
                    socket.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, null, socket),
                    socket.EndSend);
 
+        Console.WriteLine($"sent : {sendCount}, {BitConverter.ToString(buffer)}");
         return sendCount;
     }
 

@@ -76,7 +76,8 @@ public struct RtuRequestRegistrationAck
 
 
         Console.WriteLine("---------");
-        Console.WriteLine(  BitConverter.ToString(result));
+        var message = BitConverter.ToString(result);
+        Console.WriteLine( message );
         Console.WriteLine("---------");
         
         return result;
