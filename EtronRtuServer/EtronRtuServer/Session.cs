@@ -35,7 +35,7 @@ public class Session
 
         if(header.CommandId == 0x14)
         {
-            var ack = new RtuRequestRegistrationAck();
+            var ack = new RtuRequestRegistrationAck(header);
             
             await this.TcpClient.Client.SendAsync(ack.ToBytes());
         }
