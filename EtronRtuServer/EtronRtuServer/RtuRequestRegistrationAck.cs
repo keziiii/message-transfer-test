@@ -46,7 +46,7 @@ public struct RtuRequestRegistrationAck
         this.StatusCode = 0;
         this.AlwaysOn = 0; // 사용x
         this.StartTime = new byte[2]; // 사용x
-        this.EndTime = new byte[2]; // 사용x
+        this.EndTime = new byte[] { 23, 59 };
         this.HeartBeatInterval = (ushort)3;
         this.CurrentTime = new byte[4]; // 사용x
     }
@@ -69,7 +69,7 @@ public struct RtuRequestRegistrationAck
         memoryStream.Write(this.StartTime);
         memoryStream.Write(this.EndTime);
 
-        memoryStream.Write(Binary.LittleEndian.GetBytes(this.BodyLength));
+        memoryStream.Write(Binary.LittleEndian.GetBytes(this.HeartBeatInterval));
         memoryStream.Write(this.CurrentTime);
         
         var result = memoryStream.ToArray();
