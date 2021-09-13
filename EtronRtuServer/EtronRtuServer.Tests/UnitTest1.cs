@@ -41,4 +41,14 @@ public class UnitTest1
 
         Assert.Equal(61, ackBytes.Length);
     }
+
+    [Fact]
+    public void JsonLoggerTest()
+    {
+
+        var jsonLogger = new JsonLogger();
+
+        jsonLogger.Write("test", new { a = 1, b = 2 });
+
+    }
 }

@@ -6,3 +6,5 @@ global using System.Threading.Tasks;
 global using System.Net;
 global using System.Net.Sockets;
 global using BinaryEncoding;
+global using Newtonsoft.Json;
+global using Newtonsoft.Json.Linq;
