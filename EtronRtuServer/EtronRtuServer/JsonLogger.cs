@@ -10,7 +10,7 @@ public class JsonLogger
         var jo1 = JObject.FromObject(new
         {
             subject,
-            time = now.ToString("yyyy - MM - ddTHH:mm: ss.ffffff")
+            time = now.ToString("yyyy-MM-ddTHH:mm:ss.ffffff")
         });
         var jo2 = JObject.FromObject(message);
 

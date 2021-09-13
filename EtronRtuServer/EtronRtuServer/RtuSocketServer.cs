@@ -3,12 +3,14 @@
 public class RtuSocketServer
 {
 
-    public RtuSocketServer(JsonLogger jsonLogger)
+    public RtuSocketServer(PubService pubService, JsonLogger jsonLogger)
     {
+        this.pubService = pubService;
         this.jsonLogger = jsonLogger;
     }
 
     public Dictionary<int, Session> Sessions = new ();
+    private readonly PubService pubService;
     private readonly JsonLogger jsonLogger;
 
     public async Task Listen()
@@ -38,7 +40,7 @@ public class RtuSocketServer
         {
             sessionId
         }); //접속됨.
-        var session = new Session(sessionId, tcpClient);
+        var session = new Session(pubService, sessionId, tcpClient);
 
         Sessions.Add(sessionId, session);
 

@@ -1,8 +1,10 @@
 namespace EtronRtuServer;
 public class Session
 {
-    public Session(int sessionId, TcpClient tcpClient)
+    
+    public Session(PubService pubService, int sessionId, TcpClient tcpClient)
     {
+        this.pubService = pubService;
         SessionId = sessionId;
         TcpClient = tcpClient;
         this.jsonSessionLogger = new JsonSessionLogger(this);
@@ -63,6 +65,7 @@ public class Session
 
     static readonly byte[] statusAckBytes = new byte[] { 0x56, 0x76, 0x03 };
     private readonly JsonSessionLogger jsonSessionLogger;
+    private readonly PubService pubService;
 
     async Task OnReceive(RtuHeader header, byte[] payload)
     {
@@ -70,6 +73,10 @@ public class Session
         {
             this.Imei = header.Imei;
 
+            this.jsonSessionLogger.Write("receive request registration", new
+            {
+
+            });
             //db 확인
             //첫접속에 대한 확인+처리
 
@@ -78,11 +85,19 @@ public class Session
         }
         else if(header.CommandId == 0x02)
         {
-            this.jsonSessionLogger.Write("receive request registration", new
+            this.jsonSessionLogger.Write("receive device status", new
             {
-                
+
             });
             await this.TcpClient.Client.SendAsync(statusAckBytes);
+
+            pubService.PublishMessage("rtu-binary", new
+            {
+                imei = this.Imei,
+                header,
+                payload = BitConverter.ToString( payload),
+                time = DateTime.Now
+            });
         }
         else
         {
