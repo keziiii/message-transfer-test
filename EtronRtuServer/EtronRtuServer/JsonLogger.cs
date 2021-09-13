@@ -37,7 +37,7 @@ public class JsonSessionLogger
         var jo1 = JObject.FromObject(new
         {
             subject,
-            time = now.ToString("yyyy - MM - ddTHH:mm: ss.ffffff"),
+            time = now.ToString("yyyy-MM-ddTHH:mm:ss.ffffff"),
             imei = session.Imei
         });
         var jo2 = JObject.FromObject(message);
