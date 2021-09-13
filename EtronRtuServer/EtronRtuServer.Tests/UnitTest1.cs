@@ -13,6 +13,7 @@ public class UnitTest1
         var headerBytes = Extensions.HexToBytes(hex);
 
         this.binaryReader = new BinaryReader(headerBytes);
+
     }
 
 
@@ -42,13 +43,4 @@ public class UnitTest1
         Assert.Equal(61, ackBytes.Length);
     }
 
-    [Fact]
-    public void JsonLoggerTest()
-    {
-
-        var jsonLogger = new JsonLogger();
-
-        jsonLogger.Write("test", new { a = 1, b = 2 });
-
-    }
 }

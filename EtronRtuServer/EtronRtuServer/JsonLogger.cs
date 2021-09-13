@@ -3,20 +3,26 @@ namespace EtronRtuServer;
 
 public class JsonLogger
 {
-    public void Write(string subject, object message)
+    public virtual void Write(string subject, object message)
+    {
+        var jo1 = this.CreateMessage(subject, message);
+        Console.WriteLine(jo1.ToString());
+    }
+
+    protected JObject CreateMessage(string subject, object message)
     {
         var now = DateTime.Now;
 
-        var jo1 = JObject.FromObject(new
+        var result = JObject.FromObject(new
         {
             subject,
             time = now.ToString("yyyy-MM-ddTHH:mm:ss.ffffff")
         });
         var jo2 = JObject.FromObject(message);
 
-        jo1.Merge(jo2);
+        result.Merge(jo2);
 
-        Console.WriteLine(jo1.ToString());
+        return result;
     }
 }
 
