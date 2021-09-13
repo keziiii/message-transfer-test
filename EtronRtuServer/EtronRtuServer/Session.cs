@@ -5,12 +5,15 @@ public class Session
     {
         SessionId = sessionId;
         TcpClient = tcpClient;
+        this.jsonSessionLogger = new JsonSessionLogger(this);
+        this.ConnectedTime = DateTime.Now;
     }
 
     public int SessionId { get; }
+    public DateTime ConnectedTime { get; set; }
     public TcpClient TcpClient { get; }
 
-    public string Imei { get; private set; }
+    public string? Imei { get; private set; }
 
     public async Task StartReceive()
     {
@@ -20,18 +23,38 @@ public class Session
             try
             {
                 var headerBytes = await socket.ReceiveAsync(50);
-                Console.WriteLine($"header : {BitConverter.ToString(headerBytes)}");
 
                 var headerReader = new BinaryReader(headerBytes);
                 var header = headerReader.ReadHeader();
 
+                this.jsonSessionLogger.Write("receive header", new
+                {
+                    raw = BitConverter.ToString(headerBytes),
+                    header
+                });
+
                 var payload = header.BodyLength == 0 ? Array.Empty<byte>() : await socket.ReceiveAsync(header.BodyLength);
+
+                if(payload.Length > 0)
+                {
+                    this.jsonSessionLogger.Write("receive payload", new
+                    {
+                        header,
+                        payload
+                    });
+                }
+
 
                 await this.OnReceive(header, payload);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                this.jsonSessionLogger.Write("session exception", new
+                {
+                    error = ex.Message,
+                    stacktrace = ex.StackTrace
+                });
+
                 break;
             }
         }
@@ -39,11 +62,10 @@ public class Session
 
 
     static readonly byte[] statusAckBytes = new byte[] { 0x56, 0x76, 0x03 };
+    private readonly JsonSessionLogger jsonSessionLogger;
 
     async Task OnReceive(RtuHeader header, byte[] payload)
     {
-        Console.WriteLine($"payload : {BitConverter.ToString(payload)}");
-
         if(header.CommandId == 0x14)
         {
             this.Imei = header.Imei;
@@ -56,7 +78,10 @@ public class Session
         }
         else if(header.CommandId == 0x02)
         {
-            Console.WriteLine($"{payload.Length} >> {BitConverter.ToString(payload)}");
+            this.jsonSessionLogger.Write("receive request registration", new
+            {
+                
+            });
             await this.TcpClient.Client.SendAsync(statusAckBytes);
         }
         else

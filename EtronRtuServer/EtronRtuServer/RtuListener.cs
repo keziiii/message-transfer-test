@@ -2,6 +2,13 @@ namespace EtronRtuServer;
 
 public class RtuListener
 {
+    private readonly JsonLogger jsonLogger;
+
+    public RtuListener(JsonLogger jsonLogger)
+    {
+        this.jsonLogger = jsonLogger;
+    }
+
     public async Task Listen()
     {
         int port = 7000;
@@ -15,7 +22,11 @@ public class RtuListener
 
             sessionId++;
 
-            Console.WriteLine($"connected : {sessionId}"); //접속됨.
+            this.jsonLogger.Write("connected", new
+            {
+                sessionId
+            }); //접속됨.
+
             var session = new Session(sessionId, tcpClient);
 
             _ = session.StartReceive();

@@ -3,9 +3,8 @@ public class Program
 {
     public static async Task Main()
     {
-        Console.WriteLine("Hello, World!");
-
-        var listener = new RtuSocketServer();
+        var jsonLogger = new JsonLogger();
+        var listener = new RtuSocketServer(jsonLogger);
 
         await listener.Listen();
     }

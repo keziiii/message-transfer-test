@@ -3,13 +3,25 @@
 public class RtuSocketServer
 {
 
+    public RtuSocketServer(JsonLogger jsonLogger)
+    {
+        this.jsonLogger = jsonLogger;
+    }
+
     public Dictionary<int, Session> Sessions = new ();
+    private readonly JsonLogger jsonLogger;
 
     public async Task Listen()
     {
         int port = 7000;
         var listener = new TcpListener(new IPEndPoint(IPAddress.Any, port));
+
         listener.Start();
+
+        this.jsonLogger.Write("listener started", new
+        {
+            port
+        }); //접속됨.
 
         int sessionId = 0;
         while (true)
@@ -22,14 +34,20 @@ public class RtuSocketServer
 
     public async Task OnAccepted(int sessionId, TcpClient tcpClient)
     {
-        Console.WriteLine($"connected : {sessionId}"); //접속됨.
-
+        this.jsonLogger.Write("connected", new
+        {
+            sessionId
+        }); //접속됨.
         var session = new Session(sessionId, tcpClient);
 
         Sessions.Add(sessionId, session);
 
         await session.StartReceive();
 
-        Console.WriteLine($"finished : {session.SessionId}, removed : {Sessions.Remove(session.SessionId)}");
+        this.jsonLogger.Write("disconnected", new
+        {
+            session.SessionId,
+            removed = Sessions.Remove(session.SessionId)
+        }); //접속종료.
     }
 }
