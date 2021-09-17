@@ -7,11 +7,17 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder();
 
-        builder.Services.AddControllers();
+        var services = builder.Services;
+
+        services
+            .AddSingleton<JsonLogger>()
+            .AddSingleton<PubService>()
+            .AddSingleton<RtuSocketServer>()
+
+            .AddControllers();
 
         var app = builder.Build();
-
-        app.UseHttpsRedirection();
+        
         app.UseRouting();
         app.UseEndpoints(endpoints =>
         {
@@ -20,11 +26,6 @@ public class Program
 
         await app.RunAsync();
 
-        var services = new ServiceCollection();
-
-        services.AddSingleton<JsonLogger>();
-        services.AddSingleton<PubService>();
-        services.AddSingleton<RtuSocketServer>();
 
         var provider = services.BuildServiceProvider();
         

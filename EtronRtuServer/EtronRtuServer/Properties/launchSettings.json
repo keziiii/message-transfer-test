@@ -6,7 +6,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "launchUrl": "/api/values",
+      "launchUrl": "api/connections",
       "applicationUrl": "http://localhost:5000"
     }
   }
