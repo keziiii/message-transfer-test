@@ -23,14 +23,9 @@ public class Program
         {
             endpoints.MapControllers();
         });
-
-        await app.RunAsync();
-
-
-        var provider = services.BuildServiceProvider();
         
-        var listener = provider.GetRequiredService<RtuSocketServer>();
+        var listener = app.Services.GetRequiredService<RtuSocketServer>();
 
-        await listener.Listen();
+        await Task.WhenAll(app.RunAsync(), listener.Listen());
     }
 }
