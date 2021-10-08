@@ -1,4 +1,6 @@
-﻿namespace EtronRtuServer;
+﻿using System.IO;
+
+namespace EtronRtuServer;
 /*
 Command ID
 (0x02) Response Get Device Status 
